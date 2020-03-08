@@ -1,6 +1,6 @@
 import knex from 'knexClient'
 // import {getAvailabilities} from './Openings4.gen'
-import {getAvailabilities} from './GenericSlots.gen'
+import {getAvailabilities} from './Get.gen'
 
 describe('getAvailabilities', () => {
   beforeEach(() => knex('events').truncate())

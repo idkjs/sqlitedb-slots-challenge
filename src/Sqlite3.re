@@ -17,20 +17,6 @@ module Statement = {
 
 module Database = {
   type t;
-
-  // [@bs.deriving abstract]
-  // type options = {
-  //   [@bs.optional]
-  //   memory: bool,
-  //   [@bs.optional]
-  //   readonly: bool,
-  //   [@bs.optional]
-  //   fileMustExist: bool,
-  //   [@bs.optional]
-  //   verbose: bool,
-  //   [@bs.optional]
-  //   timeout: int,
-  // };
 module Config = {
     type t;
 
@@ -100,24 +86,3 @@ module Connection = {
 
   [@bs.get] external readonly: t => bool="readonly";
 };
-// let makeDatabase =
-//     (
-//       path,
-//       ~memory=?,
-//       ~readonly=?,
-//       ~fileMustExist=?,
-//       ~timeout=?,
-//       ~verbose=?,
-//       (),
-//     ) =>
-//   Database.makeDatabase(
-//     path,
-//     Database.options(
-//       ~memory?,
-//       ~readonly?,
-//       ~fileMustExist?,
-//       ~timeout?,
-//       ~verbose?,
-//       (),
-//     ),
-//   );
