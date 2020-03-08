@@ -1,0 +1,56 @@
+{
+  "name": "doctolib-knex",
+  "version": "0.1.0",
+  "sources": [
+    {
+      "dir": "src",
+      "subdirs": true
+    }
+  ],
+  "package-specs": [
+    {
+      "module": "commonjs",
+      "in-source": true
+    },
+    {
+      "module": "es6",
+      "in-source": false
+    }
+  ],
+  "suffix": ".bs.js",
+  "bs-dependencies": [
+    "@glennsl/bs-json",
+    "reason-promise",
+    "reason-future",
+    "bs-moment",
+    "bs-knex",
+    "decco",
+    "bs-log",
+    "bs-jest-date-mock"
+  ],
+  "bs-dev-dependencies": [
+    "@glennsl/bs-jest"
+  ],
+  "ppx-flags": [
+    "decco/ppx",
+    "bs-log/ppx"
+  ],
+  "bsc-flags": [
+    "-bs-super-errors",
+    "-bs-g"
+  ],
+  "warnings": {
+    "error": "+101"
+  },
+  "namespace": true,
+  "refmt": 3,
+  "gentypeconfig": {
+    "language": "untyped",
+    "debug": {
+      "all": false
+    },
+    "exportInterfaces": true,
+    "propTypes": true,
+    "fileHeader": "this is a custom header you can add to every file!"
+  }
+}
