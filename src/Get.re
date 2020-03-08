@@ -51,14 +51,14 @@ let isWithinInterval = (interval, date) => {
 let makeInterval = (start, end_) => {start, end_};
 let decodeEvent: Js.t('a) => event =
   r => {
-    Js.log(r);
+
     let event: event = {
       kind: r##kind,
       starts: r##starts_at |> Js.Date.fromFloat,
       ends: r##ends_at |> Js.Date.fromFloat,
       weekly_recurring: r##weekly_recurring,
     };
-    Js.log2("event", event);
+
     event;
   };
 
@@ -210,7 +210,7 @@ let makeResult = (r, date): availabilities => {
 open Sqlite3;
 
 let db =
-  Database.make(~path="db.sqlite", ~verbose=Js.log, ~fileMustExist=true, ());
+  Database.make(~path="db.sqlite", ~fileMustExist=true, ());
 [@genType]
 let getAvailabilities = date => {
   let makeResultWithDate = makeResult(_, date);

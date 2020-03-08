@@ -38,19 +38,12 @@ function makeInterval(start, end_) {
 }
 
 function decodeEvent(r) {
-  console.log(r);
-  var event_kind = r.kind;
-  var event_starts = new Date(r.starts_at);
-  var event_ends = new Date(r.ends_at);
-  var event_weekly_recurring = r.weekly_recurring;
-  var $$event = {
-    kind: event_kind,
-    starts: event_starts,
-    ends: event_ends,
-    weekly_recurring: event_weekly_recurring
-  };
-  console.log("event", $$event);
-  return $$event;
+  return {
+          kind: r.kind,
+          starts: new Date(r.starts_at),
+          ends: new Date(r.ends_at),
+          weekly_recurring: r.weekly_recurring
+        };
 }
 
 function makeYMD(date) {
@@ -176,10 +169,7 @@ function makeResult(r, date) {
   return availabilities;
 }
 
-var db = Sqlite3$SqlitedbSlotsChallenge.Database.make("db.sqlite", undefined, undefined, (function (prim) {
-        console.log(prim);
-        return /* () */0;
-      }), true, /* () */0);
+var db = Sqlite3$SqlitedbSlotsChallenge.Database.make("db.sqlite", undefined, undefined, undefined, true, /* () */0);
 
 function getAvailabilities(date) {
   return makeResult(db.prepare("select * from `events`").all(), date);

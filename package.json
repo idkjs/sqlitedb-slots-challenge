@@ -2,33 +2,27 @@
   "name": "sqlitedb-slots-challenge",
   "private": true,
   "version": "0.0.0",
-  "description": "qlitedb-slots-challenge in reason.",
+  "description": "sqlitedb-slots-challenge in reason",
   "scripts": {
     "watch": "bsb -clean-world -make-world -w",
-    "debug": "BS_LOG=warn bsb -clean-world -make-world -w",
     "db:migrate": "knex migrate:latest",
     "db:rollback": "knex migrate:rollback",
-    "db:seed": "knex seed:run",
-    "test": "yarn db:migrate && jest --watchAll",
-    "watch:test": "jest --watchAll"
+    "test": "yarn db:migrate && jest --watchAll"
   },
   "dependencies": {
     "@glennsl/bs-json": "5.0.2",
     "better-sqlite3": "6.0.1",
     "bs-knex": "3.1.0",
-
     "bs-moment": "0.4.5",
-
-    "decco": "1.1.1",
     "knex": "^0.20.10",
     "moment": "^2.24.0",
     "sqlite3": "^4.1.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
-    "@babel/core": "7.8.6",
-    "@babel/node": "7.8.4",
-    "@babel/preset-env": "^7.8.6",
+    "@babel/core": "7.8.7",
+    "@babel/node": "7.8.7",
+    "@babel/preset-env": "^7.8.7",
     "@glennsl/bs-jest": "0.4.10",
     "babel-jest": "^25.1.0",
     "babel-plugin-module-resolver": "^4.0.0",
@@ -38,7 +32,7 @@
   },
   "jest": {
     "transformIgnorePatterns": [
-      "/node_modules/(?!@glennsl/bs-jest|bs-platform|bs-log|@glennsl/bs-json).+\\.js$"
+      "/node_modules/(?!@glennsl/bs-jest|bs-platform|@glennsl/bs-json).+\\.js$"
     ]
   }
 }

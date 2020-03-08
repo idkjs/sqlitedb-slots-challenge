@@ -20,20 +20,11 @@
   "suffix": ".bs.js",
   "bs-dependencies": [
     "@glennsl/bs-json",
-    "reason-promise",
-    "reason-future",
     "bs-moment",
-    "bs-knex",
-    "decco",
-    "bs-log",
-    "bs-jest-date-mock"
+    "bs-knex"
   ],
   "bs-dev-dependencies": [
     "@glennsl/bs-jest"
-  ],
-  "ppx-flags": [
-    "decco/ppx",
-    "bs-log/ppx"
   ],
   "bsc-flags": [
     "-bs-super-errors",
