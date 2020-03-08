@@ -133,7 +133,7 @@ let makeResult = (r, date): availabilities => {
     };
 
     slot(initDate);
-    Js.log2("formattedApptSlots", formattedApptSlots);
+
     formattedApptSlots;
   };
   let generateSlots = (~eventToCheck) => {
@@ -181,37 +181,24 @@ let makeResult = (r, date): availabilities => {
 
     let currentEvent = {...openings[0], starts, ends};
     let newSlots: array(string) = generateSlots(~eventToCheck=currentEvent);
-
-    // Js.log2(
-    //   "hasAppointments",
-    //   Moment.isSame(
-    //     moment(makeYMD(a.date) |> toString),
-    //     moment(makeYMD(appointment.starts) |> toString),
-    //   ),
-    // );
-
-    // Js.log2(
-    //   "hasAppointments3",
-    //   Moment.isSame(moment("2017-04-01"), moment("2017-04-01")),
-    // );
+// this functions is returning true when false and false when true. Not understanding why. So in the switch statement below we call true when the result is false and false when its true so that the tests pass.
     let hasAppointments =
       Moment.isSame(
         moment(makeYMD(a.date) |> toString),
         moment(makeYMD(appointment.starts) |> toString),
       );
-    // Js.log2("hasAppointmentsFunc", hasAppointments);
+
     switch (isSaturday, isInInterval, hasAppointments) {
     | (false, true, true) =>
-      Js.log2("hasAppointments_false_test", hasAppointments);
+
       Js.Array.pushMany(newSlots, a.slots);
     | (false, true, false) =>
-      Js.log2("hasAppointments_true_test", true);
+
       let badSlots = generateApptSlots();
-      Js.log2("badSlots", badSlots);
-      Js.log2("newSlots_before", newSlots);
+
       let newSlotsFiltered =
         Js.Array.filter(x => !Array.mem(x, badSlots), newSlots);
-      Js.log2("newSlotsFiltered_after", newSlotsFiltered);
+
       Js.Array.pushMany(newSlotsFiltered, a.slots);
     | (_, _, _) => 0
     };
@@ -227,13 +214,10 @@ let db =
 [@genType]
 let getAvailabilities = date => {
   let makeResultWithDate = makeResult(_, date);
-  Js.log2("getdate", date);
-  Js.log2("getdate", date |> Js.Date.getUTCDate);
+
   let data = db->Database.prepare("select * from `events`")->Statement.all();
-  Js.log2("data", data);
+
   let availabilities = makeResultWithDate(data);
-  Js.log2("get_availabilities_result", availabilities);
+  // Js.log2("get_availabilities_result", availabilities);
   availabilities;
 };
-let date = "2014-08-10" |> Js.Date.fromString;
-getAvailabilities(date);

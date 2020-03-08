@@ -6,8 +6,8 @@ var MomentRe = require("bs-moment/src/MomentRe.js");
 var Belt_Array = require("bs-platform/lib/js/belt_Array.js");
 var Caml_array = require("bs-platform/lib/js/caml_array.js");
 var Caml_splice_call = require("bs-platform/lib/js/caml_splice_call.js");
-var Date$DoctolibKnex = require("./Date.bs.js");
-var Sqlite3$DoctolibKnex = require("./Sqlite3.bs.js");
+var Date$SqlitedbSlotsChallenge = require("./Date.bs.js");
+var Sqlite3$SqlitedbSlotsChallenge = require("./Sqlite3.bs.js");
 
 function dayToJs(param) {
   return param;
@@ -22,9 +22,9 @@ function isSaturday(date) {
 }
 
 function isWithinInterval(interval, date) {
-  var ts = Date$DoctolibKnex.copy(date).getTime();
-  if (ts >= Date$DoctolibKnex.copy(interval.start).getTime()) {
-    return ts < Date$DoctolibKnex.copy(interval.end_).getTime();
+  var ts = Date$SqlitedbSlotsChallenge.copy(date).getTime();
+  if (ts >= Date$SqlitedbSlotsChallenge.copy(interval.start).getTime()) {
+    return ts < Date$SqlitedbSlotsChallenge.copy(interval.end_).getTime();
   } else {
     return false;
   }
@@ -58,7 +58,7 @@ function makeYMD(date) {
 }
 
 function makeResult(r, date) {
-  var rangeStart = Date$DoctolibKnex.addDays(date, -1);
+  var rangeStart = Date$SqlitedbSlotsChallenge.addDays(date, -1);
   var data = Belt_Array.map(r, decodeEvent);
   var openings = Belt_Array.keepMap(data, (function (x) {
           var match = x.kind === "opening";
@@ -78,7 +78,7 @@ function makeResult(r, date) {
   var createAvailabilitiesArray = function (date) {
     return $$Array.init(7, (function (index) {
                   var __x = index + 1 | 0;
-                  var date$1 = Date$DoctolibKnex.addDays(date, __x);
+                  var date$1 = Date$SqlitedbSlotsChallenge.addDays(date, __x);
                   return {
                           date: date$1,
                           slots: []
@@ -87,7 +87,7 @@ function makeResult(r, date) {
   };
   var availabilities = createAvailabilitiesArray(rangeStart);
   var weekRangeStart = Caml_array.caml_array_get(data, 0).starts;
-  var weekRangeEnd = Date$DoctolibKnex.addDays(weekRangeStart, 7);
+  var weekRangeEnd = Date$SqlitedbSlotsChallenge.addDays(weekRangeStart, 7);
   var weekInterval = {
     start: weekRangeStart,
     end_: weekRangeEnd
@@ -105,15 +105,14 @@ function makeResult(r, date) {
         var hours = date.toString();
         var formattedSlot = MomentRe.moment(undefined, hours).format("h:mm");
         formattedApptSlots.push(formattedSlot);
-        var __x = Date$DoctolibKnex.copy(date);
-        slot(Date$DoctolibKnex.addMinutes(__x, 30));
+        var __x = Date$SqlitedbSlotsChallenge.copy(date);
+        slot(Date$SqlitedbSlotsChallenge.addMinutes(__x, 30));
         return /* () */0;
       } else {
         return /* () */0;
       }
     };
     slot(starts);
-    console.log("formattedApptSlots", formattedApptSlots);
     return formattedApptSlots;
   };
   var generateSlots = function (eventToCheck) {
@@ -129,8 +128,8 @@ function makeResult(r, date) {
         var hours = dateToCheck.toString();
         var formattedSlot = MomentRe.moment(undefined, hours).format("h:mm");
         formattedSlots.push(formattedSlot);
-        var __x = Date$DoctolibKnex.copy(dateToCheck);
-        slot(Date$DoctolibKnex.addMinutes(__x, 30));
+        var __x = Date$SqlitedbSlotsChallenge.copy(dateToCheck);
+        slot(Date$SqlitedbSlotsChallenge.addMinutes(__x, 30));
         return /* () */0;
       } else {
         return /* () */0;
@@ -165,41 +164,26 @@ function makeResult(r, date) {
           if (isSaturday || !isInInterval) {
             return 0;
           } else if (hasAppointments) {
-            console.log("hasAppointments_false_test", hasAppointments);
             return Caml_splice_call.spliceObjApply(a.slots, "push", [newSlots]);
           } else {
-            console.log("hasAppointments_true_test", true);
             var badSlots = generateApptSlots(/* () */0);
-            console.log("badSlots", badSlots);
-            console.log("newSlots_before", newSlots);
             var newSlotsFiltered = newSlots.filter((function (x) {
                     return !$$Array.mem(x, badSlots);
                   }));
-            console.log("newSlotsFiltered_after", newSlotsFiltered);
             return Caml_splice_call.spliceObjApply(a.slots, "push", [newSlotsFiltered]);
           }
         }));
   return availabilities;
 }
 
-var db = Sqlite3$DoctolibKnex.Database.make("db.sqlite", undefined, undefined, (function (prim) {
+var db = Sqlite3$SqlitedbSlotsChallenge.Database.make("db.sqlite", undefined, undefined, (function (prim) {
         console.log(prim);
         return /* () */0;
       }), true, /* () */0);
 
 function getAvailabilities(date) {
-  console.log("getdate", date);
-  console.log("getdate", date.getUTCDate());
-  var data = db.prepare("select * from `events`").all();
-  console.log("data", data);
-  var availabilities = makeResult(data, date);
-  console.log("get_availabilities_result", availabilities);
-  return availabilities;
+  return makeResult(db.prepare("select * from `events`").all(), date);
 }
-
-var date = new Date("2014-08-10");
-
-getAvailabilities(date);
 
 exports.dayToJs = dayToJs;
 exports.is = is;
@@ -211,5 +195,4 @@ exports.makeYMD = makeYMD;
 exports.makeResult = makeResult;
 exports.db = db;
 exports.getAvailabilities = getAvailabilities;
-exports.date = date;
 /* db Not a pure module */

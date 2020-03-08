@@ -1,4 +1,4 @@
-# Technical Test @ Doctolib
+# Technical Test Sqlite
 
 The goal is to write an algorithm that checks the availabilities of an agenda depending of the events attached to it. The main method has a start date for input and is looking for the availabilities of the next 7 days.
 

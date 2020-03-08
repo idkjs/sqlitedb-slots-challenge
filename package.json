@@ -1,8 +1,8 @@
 {
-  "name": "candidate-test",
+  "name": "sqlitedb-slots-challenge",
   "private": true,
   "version": "0.0.0",
-  "description": "Doctolib developer test.",
+  "description": "qlitedb-slots-challenge in reason.",
   "scripts": {
     "watch": "bsb -clean-world -make-world -w",
     "debug": "BS_LOG=warn bsb -clean-world -make-world -w",
@@ -10,7 +10,6 @@
     "db:rollback": "knex migrate:rollback",
     "db:seed": "knex seed:run",
     "test": "yarn db:migrate && jest --watchAll",
-    "doc": "yarn db:migrate && jest src/doctolib --watch",
     "watch:test": "jest --watchAll"
   },
   "dependencies": {
