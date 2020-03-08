@@ -42,13 +42,7 @@ let is = (day, date) =>
   date |> Js.Date.getDay === (day |> dayToJs |> float_of_int);
 
 let isSaturday = date => date |> is(Saturday);
-let isWithinInterval = (interval, date) => {
-  let ts = date |> Date.copy |> Js.Date.getTime;
-  ts >= (interval.start |> Date.copy |> Js.Date.getTime)
-  && ts < (interval.end_ |> Date.copy |> Js.Date.getTime);
-};
 
-let makeInterval = (start, end_) => {start, end_};
 let decodeEvent: Js.t('a) => event =
   r => {
 
@@ -72,14 +66,34 @@ let makeYMD = date => {
     )
   );
 };
-open Js.Date;
-
 open MomentRe;
+open Js.Date;
+let copy = date => date->valueOf->fromFloat;
+let toInt = date => date->valueOf->int_of_float;
+
+let addDays = (date, numberOfDays) => {
+  let d = date->copy;
+  d->setDate(d->getDate +. numberOfDays->float)->ignore;
+  d;
+};
+
+let addMinutes = (date, numberOfMinutes) => {
+  let d = date->copy;
+  d->setMinutes(d->getMinutes +. numberOfMinutes->float)->ignore;
+  d;
+};
+let isWithinInterval = (interval, date) => {
+  let ts = date |> copy |> Js.Date.getTime;
+  ts >= (interval.start |> copy |> Js.Date.getTime)
+  && ts < (interval.end_ |> copy |> Js.Date.getTime);
+};
+
+let makeInterval = (start, end_) => {start, end_};
 let makeResult = (r, date): availabilities => {
   // need to get availabilites for the 7 days in the range
   // let rangeStartDate = date;
-  // let rangeEndDate = rangeStartDate |> Date.addDays(_, 7);
-  let rangeStart = date |> Date.addDays(_, -1);
+  // let rangeEndDate = rangeStartDate |> addDays(_, 7);
+  let rangeStart = date |> addDays(_, -1);
 
   let data = Belt.Array.map(r, decodeEvent);
   // Js.log2("data", data);
@@ -104,13 +118,13 @@ let makeResult = (r, date): availabilities => {
   let createAvailabilitiesArray: Js.Date.t => availabilities =
     date =>
       Array.init(7, index =>
-        index->(+)(1)->Date.addDays(date, _)->(date => {date, slots: [||]})
+        index->(+)(1)->addDays(date, _)->(date => {date, slots: [||]})
       );
 
   let availabilities = createAvailabilitiesArray(rangeStart);
   // recurring appointments recur for a week from the first appointments start date so here we define that week and created an interval to use it.
   let weekRangeStart = data[0].starts;
-  let weekRangeEnd = weekRangeStart |> Date.addDays(_, 7);
+  let weekRangeEnd = weekRangeStart |> addDays(_, 7);
   let weekInterval = makeInterval(weekRangeStart, weekRangeEnd);
   let generateApptSlots = () => {
     let formattedApptSlots = [||];
@@ -128,7 +142,7 @@ let makeResult = (r, date): availabilities => {
 
         Js.Array.push(formattedSlot, formattedApptSlots) |> ignore;
 
-        slot(date |> Date.copy |> Date.addMinutes(_, 30)) |> ignore;
+        slot(date |> copy |> addMinutes(_, 30)) |> ignore;
       };
     };
 
@@ -150,7 +164,7 @@ let makeResult = (r, date): availabilities => {
         let hours = starts |> Js.Date.toString;
         let formattedSlot = moment(hours) |> Moment.format("h:mm");
         Js.Array.push(formattedSlot, formattedSlots) |> ignore;
-        slot(dateToCheck |> Date.copy |> Date.addMinutes(_, 30)) |> ignore;
+        slot(dateToCheck |> copy |> addMinutes(_, 30)) |> ignore;
       };
     };
 
